@@ -1,30 +1,30 @@
 package mlchallenge.fuegoquasar.model;
 
 public class Position {
-    private Long x;
-    private Long y;
+    private float x;
+    private float y;
 
     public Position() {
     }
 
-    public Position(Long x, Long y) {
+    public Position(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
-    public Long getX() {
+    public float getX() {
         return x;
     }
 
-    public void setX(Long x) {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public Long getY() {
+    public float getY() {
         return y;
     }
 
-    public void setY(Long y) {
+    public void setY(float y) {
         this.y = y;
     }
 }

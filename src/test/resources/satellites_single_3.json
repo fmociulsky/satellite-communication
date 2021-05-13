@@ -1,0 +1,15 @@
+{
+  "satellites": [
+    {
+      "name": "sato",
+      "distance": 400.0,
+      "message": [
+        "This",
+        "",
+        "is",
+        "",
+        ""
+      ]
+    }
+  ]
+}

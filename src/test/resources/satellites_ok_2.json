@@ -1,0 +1,37 @@
+{
+  "satellites": [
+    {
+      "name": "skywalker",
+      "distance": 200.0,
+      "message": [
+        "",
+        "Message",
+        "",
+        "",
+        "test"
+      ]
+    },
+    {
+      "name": "kenobi",
+      "distance": 670.82,
+      "message": [
+        "This",
+        "",
+        "",
+        "a",
+        ""
+      ]
+    },
+    {
+      "name": "sato",
+      "distance": 400.0,
+      "message": [
+        "This",
+        "",
+        "is",
+        "",
+        ""
+      ]
+    }
+  ]
+}

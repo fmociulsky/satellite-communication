@@ -1,13 +1,13 @@
-package mlchallenge.fuegoquasar.model;
+package mlchallenge.fuegoquasar.controller;
 
 import java.util.List;
 
-public class Satelite {
+public class SatelliteRequestData {
     private String name;
-    private Long distance;
+    private float distance;
     private List<String> message;
 
-    public Satelite(String name, Long distance, List<String> message) {
+    public SatelliteRequestData(String name, Long distance, List<String> message) {
         this.name = name;
         this.distance = distance;
         this.message = message;
@@ -21,12 +21,8 @@ public class Satelite {
         this.name = name;
     }
 
-    public Long getDistance() {
+    public float getDistance() {
         return distance;
-    }
-
-    public void setDistance(Long distance) {
-        this.distance = distance;
     }
 
     public List<String> getMessage() {

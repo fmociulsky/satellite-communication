@@ -1,47 +1,63 @@
 package mlchallenge.fuegoquasar.service;
 
-import mlchallenge.fuegoquasar.model.Satelite;
-import mlchallenge.fuegoquasar.model.Satellites;
+import mlchallenge.fuegoquasar.controller.HansoloControllerResponse;
+import mlchallenge.fuegoquasar.model.Position;
+import mlchallenge.fuegoquasar.controller.SatelliteRequestData;
+import mlchallenge.fuegoquasar.controller.SatelliteRequestDataList;
+import mlchallenge.fuegoquasar.service.message.MessageException;
+import mlchallenge.fuegoquasar.service.message.MessageService;
+import mlchallenge.fuegoquasar.service.position.PositionException;
+import mlchallenge.fuegoquasar.service.position.PositionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-import java.util.StringJoiner;
-import java.util.stream.Collectors;
 
+@Service
 public class SatelliteService {
+
+    HashMap<String, SatelliteRequestData> satellitesData;
+
+    @Autowired
+    private MessageService messageService;
+
+    @Autowired
+    private PositionService positionService;
+
     final List<String> messages = new ArrayList<>();
 
-    public String getMessage(Satellites satellites) {
-        initializeMessages();
-        buildMergedMessageFromSatellites(satellites.getSatellites());
-        if(messages.contains(EMPTY)) return MESSAGE_INCOMPLETE;
-
-        final StringJoiner stringJoiner = new StringJoiner(" ");
-        messages.forEach(stringJoiner::add);
-        return stringJoiner.toString();
+    public HansoloControllerResponse getMessageAndPosition(SatelliteRequestDataList satellitesRequestDataList) throws HanSoloException {
+        satellitesRequestDataList.getSatellites().forEach(this::updateSatellitesData);
+        return buildDataResponse();
     }
 
-    private void buildMergedMessageFromSatellites(List<Satelite> satellites) {
-        for (final Satelite satellite : satellites) {
-            for (int i = 0; i < satellite.getMessage().size(); i++) {
-                if(messages.get(i).equals(EMPTY))
-                    messages.set(i,satellite.getMessage().get(i));
-            }
+    public HansoloControllerResponse getMessageAndPositionSplited(SatelliteRequestData satelliteRequestData) throws HanSoloException {
+        updateSatellitesData(satelliteRequestData);
+        return buildDataResponse();
+    }
+
+    private HansoloControllerResponse buildDataResponse() throws HanSoloException{
+        try{
+            final Position position = positionService.getPosition(SatelliteServiceUtil.getSatellitesDistances(satellitesData));
+            final String mensaje = messageService.getMessage(SatelliteServiceUtil.getSatellitesMessages(satellitesData));
+            return new HansoloControllerResponse(position, mensaje);
+        }catch (final MessageException | PositionException msgException){
+            throw new HanSoloException(msgException.getMessage());
         }
     }
 
-    private void initializeMessages() {
-        for (int i = 0; i < MESSAGE_LENGHTH; i++) {
-            messages.add(EMPTY);
-        }
+    private void updateSatellitesData(SatelliteRequestData satelliteRequestData) {
+        if(satellitesData == null) satellitesData = new HashMap<>();
+        satellitesData.put(satelliteRequestData.getName(), satelliteRequestData);
     }
 
-    private static final int MESSAGE_LENGHTH = 5;
-    private static final String EMPTY = "";
-    private static final String MESSAGE_INCOMPLETE = "The message could't be received completed - Comunication Error";
+    public void registerSatellite(String satellite_name, Position position) {
+        positionService.registerSatellite(satellite_name, position);
+    }
+
+    public void unregisterSatellites() {
+        positionService.unregisterSatellites();
+    }
 }
