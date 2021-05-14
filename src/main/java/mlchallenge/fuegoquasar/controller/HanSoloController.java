@@ -23,7 +23,7 @@ public class HanSoloController {
     private SatelliteService satelliteService;
 
     @PostMapping(value = "/topsecret/satellite/{satellite_name}")
-    public ResponseEntity<String> register(@RequestBody Position position, @PathVariable String satellite_name) {
+    public ResponseEntity<String> registerSatellite(@RequestBody Position position, @PathVariable String satellite_name) {
         try {
             satelliteService.registerSatellite(satellite_name, position);
             return new ResponseEntity<>(String.format("Satellite %s registered", satellite_name), HttpStatus.OK);
