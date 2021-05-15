@@ -17,7 +17,7 @@ public class MathUtils {
         return bd.intValue();
     }
 
-    public static float powerTwo(float value) {
+    public static float pow(float value) {
         return value * value;
     }
 

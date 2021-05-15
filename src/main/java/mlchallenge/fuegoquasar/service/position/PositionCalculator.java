@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Function;
 
-import static mlchallenge.fuegoquasar.service.position.PositionCalculatorException.TrilateralizationExceptionError.SATELLITE_QTY_NOT_ENOUGH;
-import static mlchallenge.fuegoquasar.util.MathUtils.powerTwo;
+import static mlchallenge.fuegoquasar.service.position.PositionCalculatorException.PositionCalculatorExceptionError.SATELLITE_QTY_NOT_ENOUGH;
+import static mlchallenge.fuegoquasar.util.MathUtils.pow;
 
 public class PositionCalculator {
 
@@ -30,16 +30,16 @@ public class PositionCalculator {
         final float yB = b.getY();
         final float rB = b.getDistance();
 
-        final float k = (powerTwo(rA) - powerTwo(rB) + powerTwo(xB) - powerTwo(xA) + powerTwo(yB) - powerTwo(yA)) / (2 * (yB - yA));
+        final float k = (pow(rA) - pow(rB) + pow(xB) - pow(xA) + pow(yB) - pow(yA)) / (2 * (yB - yA));
         final float c = (xB - xA) / (yB - yA);
 
         final float minusB = (-2 * yA) * c + (2 * xA) + (2 * k * c);
 
-        final float toRoot = powerTwo(2 * yA * c - 2 * xA - 2 * k * c) - 4 * (1 + powerTwo(c)) * (powerTwo(k) + powerTwo(xA) + powerTwo(yA) - powerTwo(rA) - 2 * yA * k);
-        if (toRoot <= 0 || Float.isNaN(toRoot)) throw new PositionCalculatorException(PositionCalculatorException.TrilateralizationExceptionError.SATELLITES_INFO_MISMATCH);
+        final float toRoot = pow(2 * yA * c - 2 * xA - 2 * k * c) - 4 * (1 + pow(c)) * (pow(k) + pow(xA) + pow(yA) - pow(rA) - 2 * yA * k);
+        if (toRoot <= 0 || Float.isNaN(toRoot)) throw new PositionCalculatorException(PositionCalculatorException.PositionCalculatorExceptionError.SATELLITES_INFO_MISMATCH);
         final float root = (float) Math.sqrt(toRoot);
 
-        final float divisor = 2 * (1 + powerTwo(c));
+        final float divisor = 2 * (1 + pow(c));
 
         final float x1 = (minusB + root) / divisor;
         final float x2 = (minusB - root) / divisor;
@@ -62,12 +62,12 @@ public class PositionCalculator {
         final Position intersection1 = twoCirclesIntersections.get(0);
         final Position intersection2 = twoCirclesIntersections.get(1);
 
-        final float circleCEquation = powerTwo(rC) - powerTwo(xC) - powerTwo(yC);
+        final float circleCEquation = pow(rC) - pow(xC) - pow(yC);
 
         final Function<Position, Float> findIntersection = location -> {
             final float x = location.getX();
             final float y = location.getY();
-            return powerTwo(x) + powerTwo(y) - 2 * xC * x - 2 * yC * y;
+            return pow(x) + pow(y) - 2 * xC * x - 2 * yC * y;
         };
 
         float comparisonTolerance = MIN_TOLERANCE;
