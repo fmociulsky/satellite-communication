@@ -26,7 +26,7 @@ import static mlchallenge.fuegoquasar.controller.SatelliteDataFixture.SATELLITES
 import static mlchallenge.fuegoquasar.controller.SatelliteDataFixture.SATELLITES_INCOMPLETE_1_JSON;
 import static mlchallenge.fuegoquasar.controller.SatelliteDataFixture.SATELLITE_3_JSON;
 import static mlchallenge.fuegoquasar.service.message.MessageBuilderException.MessageBuilderExceptionError.MESSAGE_NOT_COMPLETED;
-import static mlchallenge.fuegoquasar.service.position.PositionCalculatorException.TrilateralizationExceptionError.SATELLITE_QTY_NOT_ENOUGH;
+import static mlchallenge.fuegoquasar.service.position.PositionCalculatorException.PositionCalculatorExceptionError.SATELLITE_QTY_NOT_ENOUGH;
 import static mlchallenge.fuegoquasar.service.position.PositionException.PositionExceptionError.NO_SATELLITE_POSITION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpStatus.NOT_FOUND;

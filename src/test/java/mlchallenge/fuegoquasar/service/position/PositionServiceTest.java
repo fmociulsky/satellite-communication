@@ -16,10 +16,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashMap;
 
+import static mlchallenge.fuegoquasar.service.position.PositionCalculatorException.PositionCalculatorExceptionError.INVALID_DISTANCE;
+import static mlchallenge.fuegoquasar.service.position.PositionCalculatorException.PositionCalculatorExceptionError.SATELLITES_INFO_MISMATCH;
+import static mlchallenge.fuegoquasar.service.position.PositionCalculatorException.PositionCalculatorExceptionError.SATELLITE_QTY_NOT_ENOUGH;
 import static mlchallenge.fuegoquasar.service.position.PositionException.PositionExceptionError.NO_SATELLITE_POSITION;
-import static mlchallenge.fuegoquasar.service.position.PositionCalculatorException.TrilateralizationExceptionError.INVALID_DISTANCE;
-import static mlchallenge.fuegoquasar.service.position.PositionCalculatorException.TrilateralizationExceptionError.SATELLITES_INFO_MISMATCH;
-import static mlchallenge.fuegoquasar.service.position.PositionCalculatorException.TrilateralizationExceptionError.SATELLITE_QTY_NOT_ENOUGH;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 

@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
+import static mlchallenge.fuegoquasar.service.position.PositionCalculatorException.PositionCalculatorExceptionError.INVALID_DISTANCE;
 import static mlchallenge.fuegoquasar.service.position.PositionException.PositionExceptionError.NO_SATELLITE_POSITION;
-import static mlchallenge.fuegoquasar.service.position.PositionCalculatorException.TrilateralizationExceptionError.INVALID_DISTANCE;
 
 @Component
 public class PositionBuilder {
