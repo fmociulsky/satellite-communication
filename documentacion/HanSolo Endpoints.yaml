@@ -1,0 +1,155 @@
+swagger: "2.0"
+info:
+  description: "Descripcion de la comunicacion de satelites con la nave de Han Solo"
+  version: "1.0.0"
+  title: "HanSolo Endpoint"
+  contact:
+    email: "fmociulsky@yahoo.com.ar"
+host: "fuego-quasar-challenge.herokuapp.com"
+schemes:
+- "https"
+- "http"
+paths:
+  /topsecret/satellite/{satellite_name}:
+    post:
+      tags:
+      - "Registro de Satelites"
+      summary: "Registrar o actualizar un satelite"
+      description: "Permite registrar la posicion de un satelite"
+      operationId: "registerSatellite"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "satellite_name"
+        in: "path"
+        description: "Nombre del Satalite a registrar"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "posicion"
+        description: "Posicion del satalite"
+        required: true
+        schema:
+          $ref: "#/definitions/Position"
+      responses:
+        "200":
+          description: "Satellite Registered"
+  /topsecret/satellite:
+    delete:
+      tags:
+      - "Registro de Satelites"
+      summary: "Eliminar todos los satelites registrados"
+      operationId: "removeResisteredSatellites"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "All Satellites unregistered"
+  /topsecret:
+    post:
+      tags:
+      - "Comunicacion de Satelites"
+      summary: "Enviar mensajes y distancias del pedido de auxilio recibido por todos los satelites"
+      description: "Se envia en una sola comunicacion el detalle del mensaje de auxilio que recibio cada satelite y la distancia hacia la fuente del mensaje para calcular la posicion y el mensaje completo"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "satelliteData"
+        in: "body"
+        description: "Lista de mensajes y distancias de cada satelite"
+        required: true
+        schema:
+          $ref: "#/definitions/SatelliteRequestDataList" 
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            items:
+              $ref: "#/definitions/HansoloControllerResponse"
+        "404":
+          description: "Error generado al calcular la posicion o armar el mensaje"
+  /topsecret_split/{satellite_name}:
+    post:
+      tags:
+      - "Comunicacion de Satelites"
+      summary: "Enviar mensaje y distancia del pedido de auxilio recibido uno de los satelites"
+      description: "Se envia en una sola comunicacion el detalle del mensaje de auxilio que recibio un satelite y la distancia hacia la fuente del mensaje para calcular la posicion y el mensaje completo" 
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "satellite_name"
+        in: "path"
+        description: "Nombre del Satalite que recibio el pedido de auxilio"
+        required: true
+        type: "string"
+      - name: "satelliteRequestData"
+        in: "body"
+        description: "Mensaje y distancia recibido por el satelite"
+        required: true
+        schema:
+          $ref: "#/definitions/SatelliteRequestData"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "object"
+            items:
+              $ref: "#/definitions/HansoloControllerResponse"
+        "404":
+          description: "Error generado al calcular la posicion o armar el mensaje"
+definitions:
+  SatelliteRequestDataList:
+    type: "array"
+    items:
+        $ref: "#/definitions/SatelliteRequestData"
+  SatelliteRequestData:
+    type: "object"
+    required:
+    - "name"
+    - "message"
+    - "distance"
+    properties:
+      name:
+        type: "string"
+      message:
+        type: "string"
+      distante:
+        type: "integer"
+        format: "float"
+  HansoloControllerResponse:
+    type: "object"
+    required:
+    - "position"
+    - "message"
+    properties:
+      position:
+        type: "object"
+        $ref: "#/definitions/Position"
+      message:
+        type: "string"
+  Position:
+    type: "object"
+    required:
+    - "x"
+    - "y"
+    properties:
+      x:
+        type: "integer"
+        format: "float"
+      y:
+        type: "integer"
+        format: "float"
+    xml:
+      name: "Position"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
